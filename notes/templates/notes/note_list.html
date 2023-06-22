@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Note Platform</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        #noteList {
+            margin-top: 20px;
+        }
+
+        .note-item {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .note-item h2 {
+            color: #333;
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+
+        .note-item p {
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        #createNoteForm {
+            margin-top: 20px;
+        }
+
+        #createNoteForm label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        #createNoteForm input[type="text"],
+        #createNoteForm textarea {
+            width: 100%;
+            padding: 5px;
+            margin-bottom: 10px;
+        }
+
+        #createNoteForm input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+
+        #createNoteForm input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>My Note Platform</h1>
+    <a href="/admin/">Go to Admin</a>
+
+    <div id="noteList">
+        {% for note in notes %}
+            <div class="note-item">
+                <h2>{{ note.title }}</h2>
+                <p>Content Type: {{ note.get_content_type_display }}</p>
+                <p>Created at: {{ note.created_at }}</p>
+                <p>Created by: {{ note.created_by.username }}</p>
+                <p>Shared with:
+                    {% for user in note.shared_with.all %}
+                        {{ user.username }}{% if not forloop.last %}, {% endif %}
+                    {% empty %}
+                        No users shared with
+                    {% endfor %}
+                </p>
+            </div>
+        {% empty %}
+            <p>No notes found.</p>
+        {% endfor %}
+    </div>
+
+    <h2>Create a Note</h2>
+    <form id="createNoteForm" method="post" action="{% url 'create_note' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Create Note">
+    </form>
+</body>
+</html>
+
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>Note Platform</title>
+</head>
+<body>
+    <h1>My Note Platform</h1>
+    <a href="/admin/">Go to Admin</a>
+
+    <div id="noteList">
+        {% for note in notes %}
+            <div class="note-item">
+                <h2>{{ note.title }}</h2>
+                <p>Content Type: {{ note.get_content_type_display }}</p>
+                <p>Created at: {{ note.created_at }}</p>
+                <p>Created by: {{ note.created_by.username }}</p>
+                <p>Shared with: 
+                    {% for user in note.shared_with.all %}
+                        {{ user.username }}{% if not forloop.last %}, {% endif %}
+                    {% empty %}
+                        No users shared with
+                    {% endfor %}
+                </p>
+            </div>
+        {% empty %}
+            <p>No notes found.</p>
+        {% endfor %}
+    </div>
+
+    <h2>Create a Note</h2>
+    <form id="createNoteForm" method="post" action="{% url 'create_note' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Create Note">
+    </form>
+</body>
+</html> -->
